@@ -5,15 +5,17 @@ language: bash
 
 script:
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-- ./build.sh node 6 6
-- ./build.sh node 7 7
-- ./build.sh node latest 7
+- docker build --build-arg NODEVERSION="6" --tag="pipirates/node:6" .
+- docker build --build-arg NODEVERSION="7" --tag="pipirates/node:7" .
+- docker build --build-arg NODEVERSION="7" --tag="pipirates/node:latest" .
+- docker build --build-arg NODEVERSION="6" --tag="pipirates/node:stable" .
 
 after_success:
 - docker login -u $DOCKER_USER -p $DOCKER_PASS
 - docker push pipirate/node:6
 - docker push pipirate/node:7
 - docker push pipirate/node:latest
+- docker push pipirate/node:stable
 env:
   global:
   - secure: GZ4PHLHiR5AAUG1gWABzKxB/SOEvBWsIc24D6usdAO3WrgHb5OT4yDbvqv3cbdtRWfMXt5QdjgN1iBusEuycOZ0NHgTzxtydwLiw2rQYOKjOz4QAerXzdjhTHH+l33OEtcJI8rlpvsyTUD9ktLTTcnocfIj6aHsRhY+6nUGP9DunlwvCneKF/Edn7dnwVyU0HDGYU0qqCFZNokIsdVW+yJiTEwe2kpvXk+QWOdAE8KTxpA7JMbH3TuxD37RcV1vADEpDL7oiYzE+LlBE8jn+qNWyFFjiSBF1PDvJyhZrPnHuZ9Ui0tqjmqxyS97/a/A2ydp1MQADB5KiapnokMOcL7483sPGMg1Ttk+9acPpsKXl5k//BMYwD2xeL1e5bfvQi3k/asj2pa9LXyuYdmH17X5s0FV8V/XB70PT9fMYQew5NbqdixlmLpnnn1AKsZbYtg2AJXEGyB3enMPN+YBGPuLmJ+V1AtKcYozJk4PaaiH/O+gODe7Wbh41Q2fiXIUdpzmIAUNcvNv4z0v4XHVJlw8gMFIr8ecP7tZLuB+YAvLuWYzROfhJ6n4NC1btrpG9TJePNoxIPu1FaanzuTGevNwN6RMN8IHOEd3Rmwi3dl5oVNOsN8jTek+Z+JEDLgpBZJtYeTcG12msxkq3CsHid8LuiNrl92cV5ryUwE5uF1U=
