@@ -5,9 +5,9 @@ language: bash
 
 script:
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-- build.sh node 6 6
-- build.sh node 7 7
-- build.sh node latest 7
+- ./build.sh node 6 6
+- ./build.sh node 7 7
+- ./build.sh node latest 7
 
 after_success:
 - docker login -u $DOCKER_USER -p $DOCKER_PASS
