@@ -2,26 +2,19 @@ sudo: required
 services:
 - docker
 language: bash
+
 script:
-# prepare qemu
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-# build image for node 6
-- ./build.sh node 6 6
-# build image for node7
-- ./build.sh node 7 7
-- ./build.sh node latest 7
-# push image
-- >
-  if [ "$TRAVIS_BRANCH" == "master" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
-    docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-    TAG=$(grep "ENV MYSQL_VERSION" Dockerfile | awk 'NF>1{print $NF}')
-    docker tag hypriot/rpi-mysql hypriot/rpi-mysql:$TAG
-    docker push hypriot/rpi-mysql:$TAG
-    docker push hypriot/rpi-mysql
-  fi
+- "./build.sh node 6 6"
+- "./build.sh node 7 7"
+- "./build.sh node latest 7"
 
 after_success:
-  - docker login -u $DOCKER_USER -p $DOCKER_PASS
-  - docker push pipirate/node:6 
-  - docker push pipirate/node:7
-  - docker push pipirate/node:latest
+- docker login -u $DOCKER_USER -p $DOCKER_PASS
+- docker push pipirate/node:6
+- docker push pipirate/node:7
+- docker push pipirate/node:latest
+env:
+  global:
+  - secure: GZ4PHLHiR5AAUG1gWABzKxB/SOEvBWsIc24D6usdAO3WrgHb5OT4yDbvqv3cbdtRWfMXt5QdjgN1iBusEuycOZ0NHgTzxtydwLiw2rQYOKjOz4QAerXzdjhTHH+l33OEtcJI8rlpvsyTUD9ktLTTcnocfIj6aHsRhY+6nUGP9DunlwvCneKF/Edn7dnwVyU0HDGYU0qqCFZNokIsdVW+yJiTEwe2kpvXk+QWOdAE8KTxpA7JMbH3TuxD37RcV1vADEpDL7oiYzE+LlBE8jn+qNWyFFjiSBF1PDvJyhZrPnHuZ9Ui0tqjmqxyS97/a/A2ydp1MQADB5KiapnokMOcL7483sPGMg1Ttk+9acPpsKXl5k//BMYwD2xeL1e5bfvQi3k/asj2pa9LXyuYdmH17X5s0FV8V/XB70PT9fMYQew5NbqdixlmLpnnn1AKsZbYtg2AJXEGyB3enMPN+YBGPuLmJ+V1AtKcYozJk4PaaiH/O+gODe7Wbh41Q2fiXIUdpzmIAUNcvNv4z0v4XHVJlw8gMFIr8ecP7tZLuB+YAvLuWYzROfhJ6n4NC1btrpG9TJePNoxIPu1FaanzuTGevNwN6RMN8IHOEd3Rmwi3dl5oVNOsN8jTek+Z+JEDLgpBZJtYeTcG12msxkq3CsHid8LuiNrl92cV5ryUwE5uF1U=
+  - secure: JJY5xqe5Tt/hAw1HgIBHV++ouuVPlFJ4nfL3HvK1XJuLj/gyOOPg1k7pJhFRpoawHvR4mV/OyGbkcF5qz2WBGMsYvCTY5QP7wlP7e8qZ9eoalMJjbQWMPChhcbpRzEePzN+3WIBDZTaAq/E/V9EI3K4G5C0fT/qW3eLcHIjOs1a1ZzAhx1esUuDd69JU29AvfFetoRYFVC3v95/hiEpMqhmrL0c9+Ofov11ntfErz/nC9jTGEASeWQVM31vuR5W/mrqfFd2kJ4xsS10xvrjTV3oQQLz6f2xzYYOep6yW8uh56eKo4eGOtj1/Ld8+Cu0d4R6Wxt5wEM730SZ38atoDLRJW8ld0MDPgICejGa112FVMHCo5+nirlOQH+I+bGp99noh3fD8eAR8ygN5dGAhTgyVsGHJMyzxabpKan6qxuh8oBns3xwU1kKw0YEiiIzrO5aAGxoGc0RfbYbP7hCpbrth9SzRe7Z2AJxAIcGusE3Hg+dpSl7Fk8ikEwb1nqVLAKQk/j0OxnknRPXZNSbRht8e19A/tjbgVzVLoWGxXnw4SynHiKepq6If1QjdocXORB+Pb4golA47rWP3ctcHQeTXzMkBQpqsEkv2FFQZWAfQ/qhz7msNqXMLImagWJihXKEMBulDt7N/8N2HMUBu/kIaDEJIhyuA8kLRlDeOMuo=
