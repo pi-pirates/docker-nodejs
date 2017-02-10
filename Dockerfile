@@ -1,5 +1,5 @@
 #Pi-pirates.com nodejs
-FROM pipirates/raspbian
+FROM pipirates/raspbian-qemu
 
 ARG NODEVERSION
 
